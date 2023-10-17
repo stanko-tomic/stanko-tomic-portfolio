@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
+import { getSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -160,3 +161,21 @@ const EditProject = () => {
 };
 
 export default EditProject;
+
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    // If there's no active session, redirect to the login page
+    return {
+      redirect: {
+        destination: "/", // Replace with your login page URL
+        permanent: false, // Set to true if this is a permanent redirect
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}

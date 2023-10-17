@@ -42,7 +42,10 @@ export default Projects;
 
 export async function getServerSideProps() {
   try {
-    const response = await axios.get("http://localhost:3000/api/project/list");
+    const response = await axios.get(
+      process.env.NEXT_PUBLIC_URL + "/api/project/list" ||
+        "http://localhost:3000/api/project/list"
+    );
     const projects: any[] = response.data.list;
     return {
       props: { projects },

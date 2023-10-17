@@ -53,7 +53,9 @@ export default ProjectDetail;
 export async function getServerSideProps(ctx: any) {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/project/list?title=${ctx.query.slug}`
+      process.env.NEXT_PUBLIC_URL +
+        `/api/project/list?title=${ctx.query.slug}` ||
+        `http://localhost:3000/api/project/list?title=${ctx.query.slug}`
     );
     const project: any[] = response.data.list[0];
 
