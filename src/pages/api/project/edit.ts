@@ -1,6 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import mongooseConnect from "../../utils/mongooseConnect";
-import Project from "../../models/project"; // Import your Project model here
+import type { NextApiRequest, NextApiResponse } from "next";
+import { withAuth } from "@/lib/withAuth";
+import Project from "@/models/project";
+import { mongooseConnect } from "@/lib/mongoose";
 
 const updateProjectHandler = async (
   req: NextApiRequest,
