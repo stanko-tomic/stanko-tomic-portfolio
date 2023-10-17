@@ -24,11 +24,11 @@ export const NavBar = () => {
     <nav className="relative mb-24">
       <div className="border-gray-200 fixed z-50 top-0 right-0 left-0 border-b border-b-[#ffffff13]  bg-[#040106]">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-6">
-          <a className="flex items-center">
+          <Link href={"/"} className="flex items-center">
             <span className="self-center text-3xl whitespace-nowrap specialText uppercase font-bold">
               Stanko Tomić
             </span>
-          </a>
+          </Link>
           <button
             data-collapse-toggle="navbar-default"
             type="button"
