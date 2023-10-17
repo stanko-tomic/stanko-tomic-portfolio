@@ -14,13 +14,13 @@ export const Footer = () => {
         </div>
 
         <div className="flex flex-row items-center w-full justify-center gap-2 mb-8">
-          <a href="#">
+          <a href="https://github.com/stanko-tomic/">
             <AiFillGithub size={28} />
           </a>
-          <a href="#">
+          <a href="https://www.linkedin.com/in/stanko-tomic-4687321b9/">
             <AiFillLinkedin size={28} />
           </a>
-          <a href="#">
+          <a href="mailto:stankotomic7@gmail.com">
             <AiFillMail size={28} />
           </a>
         </div>

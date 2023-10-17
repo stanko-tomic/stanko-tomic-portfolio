@@ -1,50 +1,58 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
+import Head from "next/head";
 
 import { BiLinkExternal } from "react-icons/bi";
 
 const ProjectDetail = ({ project }: any) => {
   return (
-    <Layout>
-      <div className="grid lg:grid-cols-2 gap-4 grid-cols-1 max-w-[1600px] p-4 mx-auto">
-        <figure className="max-w-lg flex mx-auto flex-col">
-          <img
-            className="object-cover object-top max-h-[45.125rem] rounded-lg object-cover"
-            src={project.mainImage}
-            alt="image description"
-          />
-          <figcaption className="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">
-            {project.title}
-          </figcaption>
-        </figure>
+    <>
+      <Head>
+        <title>{project.title}</title>
+      </Head>
+      <Layout>
+        <div className="grid lg:grid-cols-2 gap-4 grid-cols-1 max-w-[1600px] p-4 mx-auto">
+          <figure className="max-w-lg flex mx-auto flex-col">
+            <img
+              className="object-cover object-top max-h-[45.125rem] rounded-lg object-cover"
+              src={project.mainImage}
+              alt="image description"
+            />
+            <figcaption className="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">
+              {project.title}
+            </figcaption>
+          </figure>
 
-        <div>
-          <h1 className="text-white text-3xl font-semibold">{project.title}</h1>
+          <div>
+            <h1 className="text-white text-3xl font-semibold">
+              {project.title}
+            </h1>
 
-          <div className="flex flex-wrap gap-4 mt-4">
-            {project.tags.map((tag: any) => (
-              <div
-                className="bg-[#99e6b429] text-[#99e6b4] px-1 font-semibold"
-                key={`${tag}-${project.title}`}
-              >
-                {tag}
-              </div>
-            ))}
-          </div>
+            <div className="flex flex-wrap gap-4 mt-4">
+              {project.tags.map((tag: any) => (
+                <div
+                  className="bg-[#99e6b429] text-[#99e6b4] px-1 font-semibold"
+                  key={`${tag}-${project.title}`}
+                >
+                  {tag}
+                </div>
+              ))}
+            </div>
 
-          <a
-            href={project.url}
-            className="flex items-center flex-row gap-2 cursor-pointer w-max rounded-full px-7 py-2 text-sm font-medium border border-gray-200 mt-6 hover:border-gray-500 uppercase transition "
-          >
-            LIVE URL
-            <BiLinkExternal />
-          </a>
-          <div className="mt-8">
-            <p>{project.writeup}</p>
+            <a
+              href={project.url}
+              className="flex items-center flex-row gap-2 cursor-pointer w-max rounded-full px-7 py-2 text-sm font-medium border border-gray-200 mt-6 hover:border-gray-500 uppercase transition "
+            >
+              LIVE URL
+              <BiLinkExternal />
+            </a>
+            <div className="mt-8">
+              <p>{project.writeup}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 

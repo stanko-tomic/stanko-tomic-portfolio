@@ -4,14 +4,20 @@ import Projects from "@/components/Projects";
 import { AboutMe } from "@/components/AboutMe";
 import axios from "axios";
 import Layout from "@/components/Layout";
+import Head from "next/head";
 
 const Home: React.FC<any> = ({ projects }) => {
   return (
-    <Layout>
-      <Hero />
-      <Projects projectData={projects} />
-      <Footer />
-    </Layout>
+    <>
+      <Head>
+        <title>Stanko Tomic | Home</title>
+      </Head>
+      <Layout>
+        <Hero />
+        <Projects projectData={projects} />
+        <Footer />
+      </Layout>
+    </>
   );
 };
 
