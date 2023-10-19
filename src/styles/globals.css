@@ -17,6 +17,10 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-.parsed * code {
+.parsed code {
   @apply bg-slate-700;
+}
+
+.parsed pre {
+  @apply bg-slate-700 overflow-x-scroll p-2;
 }
