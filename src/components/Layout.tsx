@@ -11,7 +11,7 @@ const Layout: React.FC<ILayout> = (props) => {
   return (
     <>
       <Head>
-        <meta name="title" content="hey" />
+        <meta name="title" content="Stanko Tomic | Portfolio" />
         <meta
           name="description"
           content="Stanko Tomić web developer portfolio website"
