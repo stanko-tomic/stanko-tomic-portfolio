@@ -25,6 +25,10 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  featured: {
+    type: Boolean,
+    default: false,
+  },
   otherImages: {
     type: [String],
     required: false,

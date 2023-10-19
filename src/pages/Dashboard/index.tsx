@@ -3,10 +3,11 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import type { GetServerSideProps } from "next/types";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 const Dashboard: React.FC<any> = ({ projects }) => {
-  console.log(projects);
-
   return (
     <Layout>
       <div className="max-w-[1400px] mx-auto">
@@ -40,10 +41,14 @@ const Dashboard: React.FC<any> = ({ projects }) => {
 
 export default Dashboard;
 
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session: any = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
-  if (!session) {
+  if (!session || !session.user || !session.user.email) {
     // If there's no active session, redirect to the login page
     return {
       redirect: {
@@ -62,4 +67,4 @@ export async function getServerSideProps(context: any) {
   return {
     props: { projects },
   };
-}
+};

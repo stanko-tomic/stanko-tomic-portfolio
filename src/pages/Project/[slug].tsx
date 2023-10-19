@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
 import Head from "next/head";
+import parse from "html-react-parser";
 
 import { BiLinkExternal } from "react-icons/bi";
 
@@ -46,9 +47,7 @@ const ProjectDetail = ({ project }: any) => {
               LIVE URL
               <BiLinkExternal />
             </a>
-            <div className="mt-8">
-              <p>{project.writeup}</p>
-            </div>
+            <div className="mt-8">{parse(project.writeup)}</div>
           </div>
         </div>
       </Layout>

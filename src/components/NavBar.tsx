@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 export const NavBar = () => {
   const [navOpen, setNavOpen] = useState(false);
+  const { data: session, status } = useSession();
 
   const navItems = [
     {
@@ -71,6 +73,28 @@ export const NavBar = () => {
                   </Link>
                 </li>
               ))}
+
+              {status === "authenticated" && (
+                <>
+                  <li>
+                    <Link
+                      href={"/Dashboard"}
+                      className="block uppercase py-2 pl-3 text-[1rem] pr-4 rounded md:border-0 md:p-0 text-white"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+
+                  <li>
+                    <button
+                      onClick={() => signOut()}
+                      className="block uppercase py-2 pl-3 text-[1rem] pr-4 rounded md:border-0 md:p-0 text-red-600"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

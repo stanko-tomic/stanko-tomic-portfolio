@@ -5,7 +5,7 @@ import { mongooseConnect } from "@/lib/mongoose";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { title, type, url, tags, writeup, mainImage } = req.body;
+    const { title, type, url, tags, writeup, mainImage, featured } = req.body;
 
     await mongooseConnect();
 
@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       tags,
       writeup,
       mainImage,
+      featured,
     });
 
     return res

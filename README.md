@@ -7,15 +7,16 @@ A personal portfolio built in NextJS using Tailwind.
 ### Uncompleted ✘
 
 - [ ] Add correct types to project
-- [ ] Fix route to edit the project
 
 ### Completed ✓
 
-- [x] Basic portfolio look
+- [x] Fix route to edit the project
+- [x] Add richtext for project
 - [x] Login system
 - [x] MongoDB implementation
 - [x] Replace mock data
 - [x] Add single project view
+- [x] Basic portfolio look
 
 ## Authors
 

@@ -3,7 +3,11 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { getServerSession } from "next-auth";
+import type { GetServerSideProps } from "next/types";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import RichTextEditor from "@/components/RichtextEditor";
 
 const EditProject = () => {
   const [title, setTitle] = useState("");
@@ -12,6 +16,10 @@ const EditProject = () => {
   const [tags, setTags] = useState("");
   const [writeup, setWriteup] = useState("");
   const [mainImage, setMainImage] = useState("");
+  const [featured, setFeatured] = useState(false);
+  const [projectToEdit, setProjectToEdit] = useState("");
+  const editorRef = useRef(null);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -21,17 +29,52 @@ const EditProject = () => {
 
       const existingProject = res.data.list[0];
 
-      setTitle(existingProject.title);
-      setType(existingProject.type);
-      setUrl(existingProject.url);
-      setWriteup(existingProject.writeup);
-      setMainImage(existingProject.mainImage);
+      try {
+        setTitle(existingProject.title);
+        setType(existingProject.type);
+        setUrl(existingProject.url);
+        setWriteup(existingProject.writeup);
+        setMainImage(existingProject.mainImage);
+        setFeatured(existingProject.featured);
+        setTags(existingProject.tags.join(","));
+
+        setProjectToEdit(existingProject._id);
+      } catch (error) {}
     };
 
     fetchData();
   }, [router.query.edit]);
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {};
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const tagsArray = tags.split(",").map((tag) => tag.trim());
+
+    const data = {
+      id: projectToEdit,
+      title,
+      type,
+      url,
+      tags: tagsArray,
+      writeup,
+      mainImage,
+      featured,
+    };
+
+    axios
+      .put("/api/project/edit", data)
+      .then((response) => {
+        // Handle the success response here
+        router.push("/Dashboard");
+      })
+      .catch((error) => {
+        // Handle any errors here
+        console.error("Error sending data:", error);
+      });
+  };
+
+  const handleEditorChange = (content: string) => {
+    setWriteup(content);
+  };
 
   return (
     <Layout>
@@ -131,6 +174,23 @@ const EditProject = () => {
               />
             </div>
             {/*  */}
+            <div>
+              <label
+                htmlFor="title"
+                className="block mb-2 text-sm font-medium text-white"
+              >
+                Featured
+              </label>
+              <input
+                checked={featured}
+                onChange={() => setFeatured((prev) => !prev)}
+                id="checked-checkbox"
+                type="checkbox"
+                value=""
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+            </div>
+            {/*  */}
             <div className="col-span-2">
               <label
                 htmlFor="message"
@@ -138,14 +198,12 @@ const EditProject = () => {
               >
                 Writeup
               </label>
-              <textarea
-                id="message"
-                rows={4}
-                value={writeup}
-                onChange={(e) => setWriteup(e.target.value)}
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write your thoughts here..."
-              ></textarea>
+              <RichTextEditor
+                wysiwyg={writeup}
+                setWysiwyg={setWriteup}
+                editorRef={editorRef}
+                handleEditorChange={handleEditorChange}
+              />
             </div>
           </div>
           <button className="mr-4 rounded-full px-7 py-2 text-sm font-medium border border-gray-200 hover:border-gray-500 uppercase transition">
@@ -162,10 +220,14 @@ const EditProject = () => {
 
 export default EditProject;
 
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session: any = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
-  if (!session) {
+  if (!session || !session.user || !session.user.email) {
     // If there's no active session, redirect to the login page
     return {
       redirect: {
@@ -178,4 +240,4 @@ export async function getServerSideProps(context: any) {
   return {
     props: {},
   };
-}
+};

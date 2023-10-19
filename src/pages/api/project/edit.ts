@@ -8,7 +8,8 @@ const updateProjectHandler = async (
   res: NextApiResponse
 ) => {
   try {
-    const { id, title, type, url, tags, writeup, mainImage } = req.body;
+    const { id, title, type, url, tags, writeup, mainImage, featured } =
+      req.body;
 
     await mongooseConnect();
 
@@ -26,6 +27,7 @@ const updateProjectHandler = async (
     projectToUpdate.tags = tags;
     projectToUpdate.writeup = writeup;
     projectToUpdate.mainImage = mainImage;
+    projectToUpdate.featured = featured;
 
     // Save the updated project to the database
     const updatedProject = await projectToUpdate.save();
@@ -38,4 +40,4 @@ const updateProjectHandler = async (
   }
 };
 
-export default updateProjectHandler;
+export default withAuth(updateProjectHandler);

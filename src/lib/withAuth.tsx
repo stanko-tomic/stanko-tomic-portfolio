@@ -18,6 +18,8 @@ export const withAuth =
 
     const foundUser = await UserModel.findOne({ email: session.user.email });
 
+    console.log(foundUser);
+
     if (!foundUser) {
       res.status(401).json({ message: "Unauthorized" });
       return;
