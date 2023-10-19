@@ -24,7 +24,7 @@ const RichTextEditor = ({ wysiwyg, editorRef, handleEditorChange }: any) => {
           "anchor",
           "searchreplace",
           "visualblocks",
-          "code",
+          "codesample",
           "fullscreen",
           "insertdatetime",
           "media",
@@ -37,7 +37,7 @@ const RichTextEditor = ({ wysiwyg, editorRef, handleEditorChange }: any) => {
           "undo redo | blocks | " +
           "bold italic forecolor | alignleft aligncenter " +
           "alignright alignjustify | bullist numlist outdent indent | " +
-          "removeformat | help | image | code",
+          "removeformat | help | image | codesample",
         content_style:
           "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
       }}

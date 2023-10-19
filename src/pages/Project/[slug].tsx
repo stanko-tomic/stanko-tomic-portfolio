@@ -47,7 +47,7 @@ const ProjectDetail = ({ project }: any) => {
               LIVE URL
               <BiLinkExternal />
             </a>
-            <div className="mt-8">{parse(project.writeup)}</div>
+            <div className="mt-8 parsed">{parse(project.writeup)}</div>
           </div>
         </div>
       </Layout>

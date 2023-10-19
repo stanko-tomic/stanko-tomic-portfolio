@@ -16,3 +16,7 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.parsed * code {
+  @apply bg-slate-700;
+}
