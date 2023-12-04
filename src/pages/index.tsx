@@ -23,12 +23,13 @@ const Home: React.FC<any> = ({ projects }) => {
 
 export default Home;
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const response = await axios.get(
       process.env.NEXT_PUBLIC_URL + "/api/project/list?latestThree=true" ||
         "http://localhost:3000/api/project/list?latestThree=true"
     );
+
     const projects: any[] = response.data.list;
     return {
       props: { projects },

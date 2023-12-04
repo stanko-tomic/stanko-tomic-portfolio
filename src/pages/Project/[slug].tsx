@@ -9,28 +9,28 @@ const ProjectDetail = ({ project }: any) => {
   return (
     <>
       <Head>
-        <title>{project.title}</title>
+        <title>{project?.title}</title>
       </Head>
       <Layout>
         <div className="grid lg:grid-cols-2 gap-4 grid-cols-1 max-w-[1600px] p-4 mx-auto">
           <figure className="max-w-lg flex mx-auto flex-col">
             <img
               className="object-cover object-top max-h-[45.125rem] rounded-lg object-cover"
-              src={project.mainImage}
+              src={project?.mainImage}
               alt="image description"
             />
             <figcaption className="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">
-              {project.title}
+              {project?.title}
             </figcaption>
           </figure>
 
           <div>
             <h1 className="text-white text-3xl font-semibold">
-              {project.title}
+              {project?.title}
             </h1>
 
             <div className="flex flex-wrap gap-4 mt-4">
-              {project.tags.map((tag: any) => (
+              {project?.tags.map((tag: any) => (
                 <div
                   className="bg-[#99e6b429] text-[#99e6b4] px-1 font-semibold"
                   key={`${tag}-${project.title}`}
@@ -41,13 +41,15 @@ const ProjectDetail = ({ project }: any) => {
             </div>
 
             <a
-              href={project.url}
+              href={project?.url}
               className="flex items-center flex-row gap-2 cursor-pointer w-max rounded-full px-7 py-2 text-sm font-medium border border-gray-200 mt-6 hover:border-gray-500 uppercase transition "
             >
               LIVE URL
               <BiLinkExternal />
             </a>
-            <div className="mt-8 parsed">{parse(project.writeup)}</div>
+            {project && (
+              <div className="mt-8 parsed">{parse(project.writeup)}</div>
+            )}
           </div>
         </div>
       </Layout>
@@ -57,14 +59,21 @@ const ProjectDetail = ({ project }: any) => {
 
 export default ProjectDetail;
 
-export async function getServerSideProps(ctx: any) {
+export async function getStaticProps(ctx: any) {
   try {
     const response = await axios.get(
       process.env.NEXT_PUBLIC_URL +
-        `/api/project/list?title=${ctx.query.slug}` ||
+        `/api/project/list?title=${ctx.params.slug}` ||
         `http://localhost:3000/api/project/list?title=${ctx.query.slug}`
     );
+
     const project: any[] = response.data.list[0];
+
+    if (!project) {
+      return {
+        notFound: true, // or handle it in a way that makes sense for your application
+      };
+    }
 
     return {
       props: { project },
@@ -72,7 +81,29 @@ export async function getServerSideProps(ctx: any) {
   } catch (error) {
     console.error("Error fetching data:", error);
     return {
-      props: { projects: [] }, // Handle errors gracefully
+      props: { project: null }, // Handle errors gracefully
+    };
+  }
+}
+
+export async function getStaticPaths() {
+  try {
+    const response = await axios.get(
+      process.env.NEXT_PUBLIC_URL + "/api/project/list?latestThree=true" ||
+        "http://localhost:3000/api/project/list?latestThree=true"
+    );
+
+    const projects: any[] = response.data.list;
+
+    const paths = projects.map((post) => ({
+      params: { slug: post.title },
+    }));
+
+    return { paths, fallback: "blocking" };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: {}, // Handle errors gracefully
     };
   }
 }
